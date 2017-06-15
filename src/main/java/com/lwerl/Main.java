@@ -54,8 +54,8 @@ public class Main {
     public static void main(String[] args) {
         long start = System.currentTimeMillis();
 
-//        new Main("localhost", "5432", "magnit", "postgres", "Nerevar1N_*", 1_000_000).run();
-        new Main("localhost", "5432", "magnit","postgres", "Nerevar1N_*", 10).run();
+//        new Main("localhost", "5432", "magnit", "postgres", "password", 1_000_000).run();
+        new Main("localhost", "5432", "magnit","postgres", "password", 10).run();
 
         System.out.println("Time: " + ((System.currentTimeMillis() - start) / 1000) + " s " + ((System.currentTimeMillis() - start) % 1000) + " ms");
     }
