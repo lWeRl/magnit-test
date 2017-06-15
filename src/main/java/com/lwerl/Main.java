@@ -1,4 +1,4 @@
-package ru.lwerl;
+package com.lwerl;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
