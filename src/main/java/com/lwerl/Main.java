@@ -26,21 +26,23 @@ import java.util.List;
 public class Main {
 
     public static final String TABLE = "test";
-    public static final String DB_NAME = "magnit";
     public static final String XML1_FILE_NAME = "1.xml";
     public static final String XML2_FILE_NAME = "2.xml";
+    public static final String XSLT_FILE_NAME = "transform.xslt";
 
     private String hostname;
     private String port;
+    private String dbName;
     private String name;
     private String password;
     private int n;
     private Connection connection;
 
 
-    public Main(String hostname, String port, String name, String password, Integer n) {
+    public Main(String hostname, String port, String dbName, String name, String password, Integer n) {
         this.hostname = hostname;
         this.port = port;
+        this.dbName = dbName;
         this.name = name;
         this.password = password;
         this.n = n;
@@ -51,8 +53,10 @@ public class Main {
 
     public static void main(String[] args) {
         long start = System.currentTimeMillis();
-//        new Main("localhost", "5432", "postgres", "Nerevar1N_*", 1_000_000).run();
-        new Main("localhost", "5432", "postgres", "Nerevar1N_*", 10).run();
+
+//        new Main("localhost", "5432", "magnit", "postgres", "Nerevar1N_*", 1_000_000).run();
+        new Main("localhost", "5432", "magnit","postgres", "Nerevar1N_*", 10).run();
+
         System.out.println("Time: " + ((System.currentTimeMillis() - start) / 1000) + " s " + ((System.currentTimeMillis() - start) % 1000) + " ms");
     }
 
@@ -70,6 +74,14 @@ public class Main {
 
     public void setPort(String port) {
         this.port = port;
+    }
+
+    public String getDbName() {
+        return dbName;
+    }
+
+    public void setDbName(String dbName) {
+        this.dbName = dbName;
     }
 
     public String getName() {
@@ -103,7 +115,7 @@ public class Main {
             System.err.println("Driver not found.");
         }
         try {
-            connection = DriverManager.getConnection("jdbc:postgresql://" + hostname + ":" + port + "/" + DB_NAME, name, password);
+            connection = DriverManager.getConnection("jdbc:postgresql://" + hostname + ":" + port + "/" + dbName, name, password);
         } catch (SQLException e) {
             System.err.println("Connect to DB failed.");
         }
@@ -170,7 +182,7 @@ public class Main {
     private void parseXML() {
         try {
             TransformerFactory factory = TransformerFactory.newInstance();
-            Source xslt = new StreamSource(new File("transform.xslt"));
+            Source xslt = new StreamSource(new File(XSLT_FILE_NAME));
             Transformer transformer = factory.newTransformer(xslt);
             Source source = new StreamSource(new BufferedInputStream(new FileInputStream(XML1_FILE_NAME)));
             transformer.transform(source, new StreamResult(new BufferedOutputStream(new FileOutputStream(XML2_FILE_NAME))));
